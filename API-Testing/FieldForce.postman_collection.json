@@ -1,0 +1,352 @@
+{
+  "info": {
+    "_postman_id": "66309cff-75c3-435c-88ad-d42dc40d09d5",
+    "name": "FieldForce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48219475"
+  },
+  "item": [
+    {
+      "name": "add customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Customer created successfully\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.Status).to.eql(200);\r",
+              "    pm.expect(response.Message).to.eql(\"Success\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Customer ID is generated\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.data.Id).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{registered_email}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"LeadId\": 0,\r\n    \"IsVisibleToAll\": true,\r\n    \"LeadName\": \"QA Test Customer\",\r\n    \"RefNo\": \"QA-002\",\r\n    \"ReferredBy\": 0,\r\n    \"Address\": \"Thane\",\r\n    \"BackView\": \"\",\r\n    \"CityId\": 2707,\r\n    \"ContactNo\": \"5551234\",\r\n    \"CountryId\": 101,\r\n    \"CustomFieldValues\": [],\r\n    \"Email\": \"qa.customer.test@example.com\",\r\n    \"FrontView\": \"\",\r\n    \"Latitude\": 0,\r\n    \"LeadContacts\": [],\r\n    \"LeadTags\": [],\r\n    \"LeadSourceId\": 1,\r\n    \"LeadStageId\": 1,\r\n    \"LeadTypeId\": 4649,\r\n    \"LocalityId\": 80302,\r\n    \"Longitude\": 0,\r\n    \"MobileNo\": \"+91 9876543210\",\r\n    \"OtherInfo\": \"\",\r\n    \"ParentLeadId\": 0,\r\n    \"PersonDesignation\": \"QA Tester\",\r\n    \"PersonLocation\": \"Thane\",\r\n    \"PersonName\": \"QA Test User\",\r\n    \"PinCode\": \"400601\",\r\n    \"StateId\": 22,\r\n    \"TerritoryId\": 0,\r\n    \"Website\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base-url}}/api/CRM/Lead?Content-type=application/json&Accept=application/json",
+          "host": [
+            "{{base-url}}"
+          ],
+          "path": [
+            "api",
+            "CRM",
+            "Lead"
+          ],
+          "query": [
+            {
+              "key": "Content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "invalid credentials",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Login should fail with invalid credentials\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.success).to.eql(false);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Error message is returned\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.errormessage).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"{{registered_email}}\",\r\n    \"password\": \"Password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://test.fieldforceconnect.com/api/account/authenticate?Content-Type=application/json&Accept=application/json",
+          "protocol": "https",
+          "host": [
+            "test",
+            "fieldforceconnect",
+            "com"
+          ],
+          "path": [
+            "api",
+            "account",
+            "authenticate"
+          ],
+          "query": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "valid credentials",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Login successful\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.success).to.eql(true);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User ID is present\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.userId).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"{{registered_email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://test.fieldforceconnect.com/api/account/authenticate?Content-Type=application/json&Accept=application/json",
+          "protocol": "https",
+          "host": [
+            "test",
+            "fieldforceconnect",
+            "com"
+          ],
+          "path": [
+            "api",
+            "account",
+            "authenticate"
+          ],
+          "query": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            },
+            {
+              "key": "Accept",
+              "value": "application/json",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Lead",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"API response is successful\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.Status).to.eql(200);\r",
+              "    pm.expect(response.Message).to.eql(\"Success\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Designation list is returned\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.data).to.be.an(\"array\").that.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Designation titles are present\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    pm.expect(response.data[0].Title).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{registered_email}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base-url}}/api/CRM/LeadDesignations",
+          "host": [
+            "{{base-url}}"
+          ],
+          "path": [
+            "api",
+            "CRM",
+            "LeadDesignations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get state list",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is not empty\", function () {\r",
+              "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is acceptable\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "{{registered_email}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base-url}}/api/GetStateList?CountryId=101",
+          "host": [
+            "{{base-url}}"
+          ],
+          "path": [
+            "api",
+            "GetStateList"
+          ],
+          "query": [
+            {
+              "key": "CountryId",
+              "value": "101"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

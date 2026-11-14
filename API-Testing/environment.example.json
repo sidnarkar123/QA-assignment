@@ -1,0 +1,25 @@
+{
+  "name": "FieldForceConnect Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "https://test.fieldforceconnect.com",
+      "enabled": true
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "registered_email",
+      "value": "your-test-email@example.com",
+      "enabled": true
+    },
+    {
+      "key": "password",
+      "value": "your_password",
+      "enabled": true
+    }
+  ]
+}
